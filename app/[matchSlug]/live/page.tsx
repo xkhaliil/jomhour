@@ -37,6 +37,7 @@ export default async function LivePage({
         matchSlug={match.slug}
         teamA={match.teamA}
         teamB={match.teamB}
+        venue={match.venue}
         initialStatus={live.status}
         initialChant={live.chant}
         initialStartedAt={live.startedAt}

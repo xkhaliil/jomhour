@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import type { ChantPayload } from "@/lib/chant-playback";
 import type { ResolvedLiveState } from "@/lib/live-session";
+import { findNationalTeam } from "@/lib/national-teams";
 import { useChantPlayback } from "./useChantPlayback";
 import { useLiveChant } from "./useLiveChant";
 import { useServerClock } from "./useServerClock";
@@ -12,6 +13,7 @@ export type LiveViewProps = {
   matchSlug: string;
   teamA: string;
   teamB: string;
+  venue: string | null;
   initialStatus: ResolvedLiveState["status"];
   initialChant: ChantPayload | null;
   initialStartedAt: number | null;
@@ -24,6 +26,7 @@ export default function LiveView({
   matchSlug,
   teamA,
   teamB,
+  venue,
   initialStatus,
   initialChant,
   initialStartedAt,
@@ -64,6 +67,8 @@ export default function LiveView({
     <div className="relative flex min-h-dvh flex-col bg-white bg-[url('/tunisia-bg-light.png')] bg-cover bg-center bg-no-repeat text-zinc-900 dark:bg-black dark:bg-[url('/tunisia-bg-dark.png')] dark:text-zinc-50">
       {live.connection === "disconnected" && <ReconnectingBanner />}
 
+      <MatchHeader teamA={teamA} teamB={teamB} venue={venue} />
+
       <Toolbar
         lang={lang}
         onToggleLang={() => setLang((l) => (l === "ar" ? "en" : "ar"))}
@@ -77,8 +82,6 @@ export default function LiveView({
           <ChantStage chant={playingChant} frame={frame} lang={lang} />
         ) : (
           <IdleStage
-            teamA={teamA}
-            teamB={teamB}
             ended={live.status === "ended"}
             nextChantTitle={live.nextChantTitle}
           />
@@ -95,6 +98,32 @@ function ReconnectingBanner() {
         <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-amber-500" />
         Reconnecting…
       </p>
+    </div>
+  );
+}
+
+function MatchHeader({
+  teamA,
+  teamB,
+  venue,
+}: {
+  teamA: string;
+  teamB: string;
+  venue: string | null;
+}) {
+  const flagA = findNationalTeam(teamA);
+  const flagB = findNationalTeam(teamB);
+
+  return (
+    <div className="absolute left-3 top-3 z-10 max-w-[60%] rounded-full border border-black/10 bg-white/70 px-3 py-1.5 shadow-sm backdrop-blur-sm sm:left-4 sm:top-4 dark:border-white/15 dark:bg-black/40">
+      <p className="flex items-center gap-1.5 truncate text-xs font-semibold">
+        {flagA && <span className={`fi fi-${flagA.code} shrink-0 rounded-sm`} aria-hidden />}
+        <span className="truncate">{teamA}</span>
+        <span className="text-red-600 dark:text-red-400">vs</span>
+        {flagB && <span className={`fi fi-${flagB.code} shrink-0 rounded-sm`} aria-hidden />}
+        <span className="truncate">{teamB}</span>
+      </p>
+      {venue && <p className="truncate text-[10px] text-zinc-500">{venue}</p>}
     </div>
   );
 }
@@ -176,7 +205,7 @@ function ChantStage({
             className={
               i < highlightCount
                 ? "text-red-600 dark:text-red-400"
-                : "text-zinc-300 dark:text-zinc-700"
+                : "text-zinc-500 dark:text-zinc-400"
             }
           >
             {g}
@@ -188,21 +217,14 @@ function ChantStage({
 }
 
 function IdleStage({
-  teamA,
-  teamB,
   ended,
   nextChantTitle,
 }: {
-  teamA: string;
-  teamB: string;
   ended: boolean;
   nextChantTitle: string | null;
 }) {
   return (
     <div className="flex w-full max-w-md flex-col items-center gap-3 rounded-3xl border border-black/5 bg-white/70 px-6 py-10 shadow-xl backdrop-blur-md dark:border-white/10 dark:bg-black/45">
-      <p className="text-sm font-semibold uppercase tracking-wide text-zinc-500">
-        {teamA} <span className="text-red-600 dark:text-red-400">vs</span> {teamB}
-      </p>
       {!ended && (
         <span className="h-2 w-2 animate-pulse rounded-full bg-red-500" aria-hidden />
       )}
