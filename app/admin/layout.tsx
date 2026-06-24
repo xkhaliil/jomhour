@@ -6,7 +6,7 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="stadium-bg min-h-screen">
+    <div className="stadium-bg min-h-screen text-black dark:text-zinc-50">
       {/* Same dark-mode preference key the fan live view's toggle writes
           to, so the two surfaces stay in sync; falls back to system
           preference when nothing's been chosen yet. */}

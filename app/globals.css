@@ -16,13 +16,12 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root:not(.light) {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+/* Dark mode is controlled solely by the `.dark` class — every page that
+ * supports it runs a pre-hydration script that adds the class based on the
+ * stored preference, falling back to `prefers-color-scheme` itself. A
+ * separate CSS media query here would re-introduce system-preference dark
+ * mode independently of that class, fighting it when they disagree (e.g. a
+ * user explicitly chose light mode but their OS is set to dark). */
 :root.dark {
   --background: #0a0a0a;
   --foreground: #ededed;
