@@ -26,6 +26,10 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      // The fan live view and match page run a pre-hydration script that
+      // toggles the `dark` class on this element based on a stored
+      // preference, before React hydrates — an expected, harmless mismatch.
+      suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>

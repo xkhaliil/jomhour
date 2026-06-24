@@ -61,7 +61,7 @@ export default function LiveView({
   const showChant = Boolean(playingChant && frame && !frame.finished);
 
   return (
-    <div className="relative flex min-h-dvh flex-col bg-white text-zinc-900 dark:bg-black dark:text-zinc-50">
+    <div className="relative flex min-h-dvh flex-col bg-white bg-[url('/tunisia-bg-light.png')] bg-cover bg-center bg-no-repeat text-zinc-900 dark:bg-black dark:bg-[url('/tunisia-bg-dark.png')] dark:text-zinc-50">
       {live.connection === "disconnected" && <ReconnectingBanner />}
 
       <Toolbar
@@ -72,7 +72,7 @@ export default function LiveView({
         hasTranslit={Boolean(playingChant?.textTranslit)}
       />
 
-      <main className="flex flex-1 flex-col items-center justify-center gap-8 px-6 py-16 text-center">
+      <main className="flex flex-1 flex-col items-center justify-center gap-6 px-4 py-16 text-center sm:px-6">
         {showChant && playingChant && frame ? (
           <ChantStage chant={playingChant} frame={frame} lang={lang} />
         ) : (
@@ -91,7 +91,8 @@ export default function LiveView({
 function ReconnectingBanner() {
   return (
     <div className="absolute inset-x-0 top-0 z-10 flex justify-center">
-      <p className="mt-3 rounded-full bg-amber-100 px-4 py-1.5 text-xs font-medium text-amber-800 dark:bg-amber-900/40 dark:text-amber-200">
+      <p className="mt-3 flex items-center gap-1.5 rounded-full bg-amber-100/90 px-4 py-1.5 text-xs font-medium text-amber-800 shadow-sm backdrop-blur-sm dark:bg-amber-900/60 dark:text-amber-200">
+        <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-amber-500" />
         Reconnecting…
       </p>
     </div>
@@ -112,11 +113,11 @@ function Toolbar({
   hasTranslit: boolean;
 }) {
   return (
-    <div className="absolute right-4 top-4 flex gap-2">
+    <div className="absolute right-3 top-3 z-10 flex gap-2 sm:right-4 sm:top-4">
       {hasTranslit && (
         <button
           onClick={onToggleLang}
-          className="rounded-full border border-black/10 px-3 py-1.5 text-xs font-medium dark:border-white/15"
+          className="rounded-full border border-black/10 bg-white/70 px-3 py-1.5 text-xs font-semibold shadow-sm backdrop-blur-sm transition hover:bg-white/90 dark:border-white/15 dark:bg-black/40 dark:hover:bg-black/60"
           aria-label="Toggle language"
         >
           {lang === "ar" ? "EN" : "AR"}
@@ -124,8 +125,12 @@ function Toolbar({
       )}
       <button
         onClick={onToggleTheme}
-        className="rounded-full border border-black/10 px-3 py-1.5 text-xs font-medium dark:border-white/15"
+        className="rounded-full border border-black/10 bg-white/70 px-3 py-1.5 text-xs font-medium shadow-sm backdrop-blur-sm transition hover:bg-white/90 dark:border-white/15 dark:bg-black/40 dark:hover:bg-black/60"
         aria-label="Toggle theme"
+        // theme's initial value depends on a pre-hydration script reading
+        // localStorage, which the server can't see — harmless one-time
+        // mismatch, corrected the instant React hydrates.
+        suppressHydrationWarning
       >
         {theme === "light" ? "🌙" : "☀️"}
       </button>
@@ -149,15 +154,15 @@ function ChantStage({
     : frame.highlightCountAr;
 
   return (
-    <>
-      <CountdownRing progress={frame.elapsedSec / chant.durationSec} />
-      <p className="text-sm font-medium uppercase tracking-wide text-zinc-500">
+    <div className="flex w-full max-w-3xl flex-col items-center gap-6 rounded-3xl border border-black/5 bg-white/70 px-5 py-10 shadow-xl backdrop-blur-md sm:px-10 dark:border-white/10 dark:bg-black/45">
+      <CountdownRing progress={frame.elapsedSec / chant.durationSec} size={84} />
+      <p className="rounded-full bg-red-600/10 px-3 py-1 text-xs font-bold uppercase tracking-wide text-red-700 dark:bg-red-500/15 dark:text-red-300">
         {chant.title}
       </p>
       <p
         dir={useTranslit ? "ltr" : "rtl"}
         lang={useTranslit ? "en" : "ar"}
-        className="max-w-3xl text-4xl font-bold leading-relaxed sm:text-6xl"
+        className="text-3xl font-bold leading-relaxed sm:text-5xl"
         // The highlight position depends on Date.now(), so the SSR pass and
         // the client hydration pass compute slightly different counts a few
         // hundred ms apart — harmless, and corrected on the next animation
@@ -170,7 +175,7 @@ function ChantStage({
             suppressHydrationWarning
             className={
               i < highlightCount
-                ? "text-emerald-500"
+                ? "text-red-600 dark:text-red-400"
                 : "text-zinc-300 dark:text-zinc-700"
             }
           >
@@ -178,7 +183,7 @@ function ChantStage({
           </span>
         ))}
       </p>
-    </>
+    </div>
   );
 }
 
@@ -194,16 +199,19 @@ function IdleStage({
   nextChantTitle: string | null;
 }) {
   return (
-    <>
-      <p className="text-sm font-medium uppercase tracking-wide text-zinc-500">
-        {teamA} vs {teamB}
+    <div className="flex w-full max-w-md flex-col items-center gap-3 rounded-3xl border border-black/5 bg-white/70 px-6 py-10 shadow-xl backdrop-blur-md dark:border-white/10 dark:bg-black/45">
+      <p className="text-sm font-semibold uppercase tracking-wide text-zinc-500">
+        {teamA} <span className="text-red-600 dark:text-red-400">vs</span> {teamB}
       </p>
-      <p className="text-2xl font-semibold sm:text-3xl">
+      {!ended && (
+        <span className="h-2 w-2 animate-pulse rounded-full bg-red-500" aria-hidden />
+      )}
+      <p className="text-2xl font-bold sm:text-3xl">
         {ended ? "Thanks for joining! 👏" : "Waiting for the next chant…"}
       </p>
       {!ended && nextChantTitle && (
         <p className="text-zinc-500">Up next: {nextChantTitle}</p>
       )}
-    </>
+    </div>
   );
 }

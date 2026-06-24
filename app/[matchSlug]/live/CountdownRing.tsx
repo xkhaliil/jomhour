@@ -33,7 +33,7 @@ export default function CountdownRing({
         // progress depends on Date.now(); SSR vs. hydration differ by a few
         // hundred ms and self-correct on the next animation frame.
         suppressHydrationWarning
-        className="stroke-emerald-500 transition-[stroke-dashoffset] duration-100 ease-linear"
+        className="stroke-red-500 transition-[stroke-dashoffset] duration-100 ease-linear"
       />
     </svg>
   );

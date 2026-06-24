@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "flag-icons/css/flag-icons.min.css";
 
 /* Class-based dark mode (toggle via JS) instead of only following system preference. */
 @custom-variant dark (&:where(.dark, .dark *));
@@ -31,4 +32,21 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Floodlit-pitch backdrop for the admin panel. */
+.stadium-bg {
+  background-color: #fafafa;
+  background-image: radial-gradient(
+    ellipse 80% 50% at 50% -10%,
+    rgba(220, 38, 38, 0.1),
+    transparent 60%
+  );
+}
+
+.dark .stadium-bg {
+  background-color: #0a0707;
+  background-image:
+    radial-gradient(ellipse 60% 40% at 15% -10%, rgba(220, 38, 38, 0.2), transparent 60%),
+    radial-gradient(ellipse 50% 40% at 100% 0%, rgba(245, 158, 11, 0.1), transparent 60%);
 }

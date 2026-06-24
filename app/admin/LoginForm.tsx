@@ -9,14 +9,20 @@ export default function LoginForm() {
   const [state, formAction, pending] = useActionState(signIn, initialState);
 
   return (
-    <div className="flex min-h-[70vh] items-center justify-center px-4">
+    <div className="flex min-h-[80vh] items-center justify-center px-4">
       <form
         action={formAction}
-        className="w-full max-w-sm space-y-4 rounded-xl border border-black/10 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-zinc-900"
+        className="w-full max-w-sm space-y-5 overflow-hidden rounded-2xl border border-black/10 bg-white p-7 shadow-xl dark:border-white/10 dark:bg-zinc-900"
       >
-        <h1 className="text-xl font-semibold text-zinc-900 dark:text-zinc-50">
-          Admin sign in
-        </h1>
+        <div className="-mx-7 -mt-7 h-1.5 bg-linear-to-r from-red-500 via-amber-400 to-red-500" />
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-wider text-red-600 dark:text-red-400">
+            Match day control
+          </p>
+          <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">
+            Admin sign in
+          </h1>
+        </div>
         <div className="space-y-1">
           <label className="block text-sm text-zinc-600 dark:text-zinc-400">
             Email
@@ -26,7 +32,7 @@ export default function LoginForm() {
             type="email"
             required
             autoComplete="email"
-            className="w-full rounded-md border border-black/10 bg-transparent px-3 py-2 text-sm outline-none focus:border-black/30 dark:border-white/15 dark:focus:border-white/40"
+            className="w-full rounded-lg border border-black/10 bg-transparent px-3 py-2.5 text-sm outline-none focus:border-red-500 dark:border-white/15 dark:focus:border-red-400"
           />
         </div>
         <div className="space-y-1">
@@ -38,7 +44,7 @@ export default function LoginForm() {
             type="password"
             required
             autoComplete="current-password"
-            className="w-full rounded-md border border-black/10 bg-transparent px-3 py-2 text-sm outline-none focus:border-black/30 dark:border-white/15 dark:focus:border-white/40"
+            className="w-full rounded-lg border border-black/10 bg-transparent px-3 py-2.5 text-sm outline-none focus:border-red-500 dark:border-white/15 dark:focus:border-red-400"
           />
         </div>
         {state.error && (
@@ -47,7 +53,7 @@ export default function LoginForm() {
         <button
           type="submit"
           disabled={pending}
-          className="w-full rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white disabled:opacity-50 dark:bg-zinc-50 dark:text-zinc-900"
+          className="w-full rounded-full bg-red-600 px-4 py-2.5 text-sm font-semibold text-white shadow-md shadow-red-600/20 transition hover:bg-red-500 disabled:opacity-50"
         >
           {pending ? "Signing in…" : "Sign in"}
         </button>

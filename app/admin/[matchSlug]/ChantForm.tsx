@@ -59,7 +59,7 @@ export default function ChantForm({
           name="title"
           required
           defaultValue={defaults?.title}
-          className="w-full rounded-md border border-black/10 bg-transparent px-3 py-2 text-sm outline-none focus:border-black/30 dark:border-white/15 dark:focus:border-white/40"
+          className="w-full rounded-lg border border-black/10 bg-transparent px-3 py-2 text-sm outline-none focus:border-red-500 dark:border-white/15 dark:focus:border-red-400"
         />
       </div>
 
@@ -74,7 +74,7 @@ export default function ChantForm({
           lang="ar"
           rows={3}
           defaultValue={defaults?.textAr}
-          className="w-full rounded-md border border-black/10 bg-transparent px-3 py-2 text-right text-lg outline-none focus:border-black/30 dark:border-white/15 dark:focus:border-white/40"
+          className="w-full rounded-lg border border-black/10 bg-transparent px-3 py-2 text-right text-lg outline-none focus:border-red-500 dark:border-white/15 dark:focus:border-red-400"
         />
       </div>
 
@@ -86,7 +86,7 @@ export default function ChantForm({
           name="textTranslit"
           dir="ltr"
           defaultValue={defaults?.textTranslit ?? ""}
-          className="w-full rounded-md border border-black/10 bg-transparent px-3 py-2 text-sm outline-none focus:border-black/30 dark:border-white/15 dark:focus:border-white/40"
+          className="w-full rounded-lg border border-black/10 bg-transparent px-3 py-2 text-sm outline-none focus:border-red-500 dark:border-white/15 dark:focus:border-red-400"
         />
       </div>
 
@@ -102,7 +102,7 @@ export default function ChantForm({
             step={1}
             required
             defaultValue={chant?.durationSec ?? 60}
-            className="w-full rounded-md border border-black/10 bg-transparent px-3 py-2 text-sm outline-none focus:border-black/30 dark:border-white/15 dark:focus:border-white/40"
+            className="w-full rounded-lg border border-black/10 bg-transparent px-3 py-2 text-sm outline-none focus:border-red-500 dark:border-white/15 dark:focus:border-red-400"
           />
         </div>
         <div className="space-y-1">
@@ -116,7 +116,7 @@ export default function ChantForm({
             step={0.1}
             required
             defaultValue={chant?.lettersPerSec ?? 1}
-            className="w-full rounded-md border border-black/10 bg-transparent px-3 py-2 text-sm outline-none focus:border-black/30 dark:border-white/15 dark:focus:border-white/40"
+            className="w-full rounded-lg border border-black/10 bg-transparent px-3 py-2 text-sm outline-none focus:border-red-500 dark:border-white/15 dark:focus:border-red-400"
           />
         </div>
       </div>
@@ -128,7 +128,7 @@ export default function ChantForm({
       <button
         type="submit"
         disabled={pending}
-        className="rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white disabled:opacity-50 dark:bg-zinc-50 dark:text-zinc-900"
+        className="rounded-full bg-red-600 px-4 py-2 text-sm font-semibold text-white shadow-sm shadow-red-600/20 transition hover:bg-red-500 disabled:opacity-50"
       >
         {pending ? "Saving…" : chant ? "Save changes" : "Add chant"}
       </button>

@@ -20,7 +20,7 @@ export default function ChantRow({
 
   if (editing) {
     return (
-      <li className="rounded-lg border border-black/10 bg-white p-4 dark:border-white/10 dark:bg-zinc-900">
+      <li className="rounded-2xl border border-black/10 bg-white p-4 shadow-sm dark:border-white/10 dark:bg-zinc-900/70">
         <ChantForm
           matchId={matchId}
           matchSlug={matchSlug}
@@ -38,13 +38,20 @@ export default function ChantRow({
   }
 
   return (
-    <li className="flex items-start justify-between gap-4 rounded-lg border border-black/10 bg-white p-4 dark:border-white/10 dark:bg-zinc-900">
+    <li
+      className={`flex flex-col gap-3 rounded-2xl border bg-white p-4 shadow-sm transition sm:flex-row sm:items-start sm:justify-between sm:gap-4 dark:bg-zinc-900/70 ${
+        isLive
+          ? "border-red-500/40 ring-1 ring-red-500/20"
+          : "border-black/10 dark:border-white/10"
+      }`}
+    >
       <div className="min-w-0">
         <div className="flex items-center gap-2">
-          <p className="font-medium text-zinc-900 dark:text-zinc-50">{chant.title}</p>
+          <p className="font-semibold text-zinc-900 dark:text-zinc-50">{chant.title}</p>
           {isLive && (
-            <span className="rounded-full bg-red-600 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-white">
-              ● Live
+            <span className="flex items-center gap-1 rounded-full bg-red-600 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white">
+              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-white" />
+              Live
             </span>
           )}
         </div>
@@ -55,7 +62,7 @@ export default function ChantRow({
           {chant.durationSec}s · {chant.lettersPerSec} letters/sec
         </p>
       </div>
-      <div className="flex shrink-0 items-center gap-3 text-sm">
+      <div className="flex flex-wrap items-center gap-3 text-sm sm:shrink-0">
         <form
           action={() => goLive(matchId, chant.id)}
           onSubmit={(e) => {
@@ -64,14 +71,14 @@ export default function ChantRow({
         >
           <button
             type="submit"
-            className="rounded-md bg-emerald-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-emerald-700"
+            className="rounded-full bg-red-600 px-3.5 py-1.5 text-sm font-semibold text-white shadow-sm shadow-red-600/20 transition hover:bg-red-500"
           >
             Go Live
           </button>
         </form>
         <button
           onClick={() => setEditing(true)}
-          className="text-zinc-600 underline hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200"
+          className="font-medium text-zinc-600 underline hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200"
         >
           Edit
         </button>
@@ -81,7 +88,7 @@ export default function ChantRow({
             if (!confirm(`Delete "${chant.title}"?`)) e.preventDefault();
           }}
         >
-          <button type="submit" className="text-red-600 underline hover:text-red-800 dark:text-red-400">
+          <button type="submit" className="font-medium text-red-600 underline hover:text-red-800 dark:text-red-400">
             Delete
           </button>
         </form>
