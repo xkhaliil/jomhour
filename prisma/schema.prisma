@@ -1,0 +1,41 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Match {
+  id        String       @id @default(cuid())
+  slug      String       @unique
+  teamA     String
+  teamB     String
+  kickoffAt DateTime
+  venue     String?
+  status    String       @default("scheduled") // scheduled | live | ended
+  chants    Chant[]
+  session   LiveSession?
+  createdAt DateTime     @default(now())
+}
+
+model Chant {
+  id            String  @id @default(cuid())
+  matchId       String
+  match         Match   @relation(fields: [matchId], references: [id], onDelete: Cascade)
+  title         String
+  textAr        String
+  textTranslit  String?
+  durationSec   Int     @default(60)
+  lettersPerSec Float   @default(1)
+  sortOrder     Int     @default(0)
+}
+
+model LiveSession {
+  matchId        String    @id
+  match          Match     @relation(fields: [matchId], references: [id], onDelete: Cascade)
+  currentChantId String?
+  startedAt      DateTime?
+  nextChantId    String?
+  status         String    @default("idle") // idle | live | ended
+}
