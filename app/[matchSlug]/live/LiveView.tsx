@@ -115,13 +115,13 @@ function MatchHeader({
   const flagB = findNationalTeam(teamB);
 
   return (
-    <div className="absolute left-3 top-3 z-10 max-w-[60%] rounded-full border border-black/10 bg-white/70 px-3 py-1.5 shadow-sm backdrop-blur-sm sm:left-4 sm:top-4 dark:border-white/15 dark:bg-black/40">
-      <p className="flex items-center gap-1.5 truncate text-xs font-semibold">
+    <div className="absolute left-3 top-3 z-10 max-w-[58%] rounded-2xl border border-black/10 bg-white/70 px-3 py-1.5 shadow-sm backdrop-blur-sm sm:left-4 sm:top-4 sm:max-w-xs dark:border-white/15 dark:bg-black/40">
+      <p className="flex flex-wrap items-center gap-1 text-xs font-semibold leading-tight">
         {flagA && <span className={`fi fi-${flagA.code} shrink-0 rounded-sm`} aria-hidden />}
-        <span className="truncate">{teamA}</span>
+        <span>{teamA}</span>
         <span className="text-red-600 dark:text-red-400">vs</span>
         {flagB && <span className={`fi fi-${flagB.code} shrink-0 rounded-sm`} aria-hidden />}
-        <span className="truncate">{teamB}</span>
+        <span>{teamB}</span>
       </p>
       {venue && <p className="truncate text-[10px] text-zinc-500">{venue}</p>}
     </div>
@@ -191,7 +191,12 @@ function ChantStage({
       <p
         dir={useTranslit ? "ltr" : "rtl"}
         lang={useTranslit ? "en" : "ar"}
-        className="text-3xl font-bold leading-relaxed sm:text-5xl"
+        // Preserve line breaks and spacing exactly as the admin typed them.
+        // Without this, the browser's default whitespace collapsing turns
+        // every "\n" into nothing (or a single space that can vanish
+        // entirely when it's alone inside its own per-grapheme <span>),
+        // gluing the end of one line directly onto the start of the next.
+        className="whitespace-pre-wrap text-3xl font-bold leading-relaxed sm:text-5xl"
         // The highlight position depends on Date.now(), so the SSR pass and
         // the client hydration pass compute slightly different counts a few
         // hundred ms apart — harmless, and corrected on the next animation
